@@ -1,113 +1,22 @@
 import clsx from "clsx";
-import { EllipsisVertical } from "lucide-react";
-import { useState } from "react";
-
-interface Irate {
-  parcela: string | number;
-  taxa: number;
-}
-
-interface IConpany {
-  conpany: string;
-  rate: Irate[];
-  style: string;
-}
-
-const mercadopagorate: Irate[] = [
-  { parcela: "Debito", taxa: 1.99 },
-  { parcela: 1, taxa: 2.99 },
-  { parcela: 2, taxa: 3.49 },
-  { parcela: 3, taxa: 4.79 },
-  { parcela: 5, taxa: 5.29 },
-  { parcela: 6, taxa: 6.29 },
-  { parcela: 7, taxa: 7.29 },
-  { parcela: 8, taxa: 8.29 },
-  { parcela: 9, taxa: 9.29 },
-  { parcela: 10, taxa: 10.29 },
-  { parcela: 11, taxa: 11.29 },
-  { parcela: 12, taxa: 12.29 },
-];
-
-const vermelhinhaRate: Irate[] = [
-  { parcela: "Debito", taxa: 2.99 },
-  { parcela: 1, taxa: 3.99 },
-  { parcela: 2, taxa: 4.49 },
-  { parcela: 3, taxa: 5.79 },
-  { parcela: 5, taxa: 6.29 },
-  { parcela: 6, taxa: 7.29 },
-  { parcela: 7, taxa: 8.29 },
-  { parcela: 8, taxa: 9.29 },
-  { parcela: 9, taxa: 10.29 },
-  { parcela: 10, taxa: 11.29 },
-  { parcela: 11, taxa: 12.29 },
-  { parcela: 12, taxa: 13.29 },
-];
-
-const amarelinhaRate: Irate[] = [
-  { parcela: "Debito", taxa: 3.99 },
-  { parcela: 1, taxa: 4.59 },
-  { parcela: 2, taxa: 5.29 },
-  { parcela: 3, taxa: 6.39 },
-  { parcela: 5, taxa: 7.69 },
-  { parcela: 6, taxa: 8.19 },
-  { parcela: 7, taxa: 9.39 },
-  { parcela: 8, taxa: 10.09 },
-  { parcela: 9, taxa: 11.89 },
-  { parcela: 10, taxa: 12.19 },
-  { parcela: 11, taxa: 13.59 },
-  { parcela: 12, taxa: 14.39 },
-];
-
-const verdinhaRate: Irate[] = [
-  { parcela: "Debito", taxa: 5.99 },
-  { parcela: 1, taxa: 6.79 },
-  { parcela: 2, taxa: 7.69 },
-  { parcela: 3, taxa: 8.29 },
-  { parcela: 5, taxa: 9.29 },
-  { parcela: 6, taxa: 10.99 },
-  { parcela: 7, taxa: 11.19 },
-  { parcela: 8, taxa: 12.39 },
-  { parcela: 9, taxa: 13.79 },
-  { parcela: 10, taxa: 14.29 },
-  { parcela: 11, taxa: 15.69 },
-  { parcela: 12, taxa: 16.29 },
-];
-
-const currentRate: IConpany[] = [
-  {
-    conpany: "Mercado Pago",
-    rate: mercadopagorate,
-    style: "hover:bg-blue-300 hover:text-blue-800",
-  },
-  {
-    conpany: "Verdinha",
-    rate: verdinhaRate,
-    style: "hover:bg-green-300 hover:text-green-800",
-  },
-  {
-    conpany: "Amarelinha",
-    rate: amarelinhaRate,
-    style: "hover:bg-yellow-300 hover:text-yellow-800",
-  },
-  {
-    conpany: "vermelhinha",
-    rate: vermelhinhaRate,
-    style: "hover:bg-red-300 hover:text-red-800",
-  },
-];
-
-interface InputValue {
-  initial: number;
-  coin: string;
-}
+import { CreditCard, EllipsisVertical } from "lucide-react";
+import { useEffect, useState } from "react";
+import { InputValue, Irate } from "./types/conpany";
+import { currentRate, mercadopagorate } from "./model/conpany-model";
 
 function App() {
+useEffect(()=>{
+  setRate(mercadopagorate)
+},[])
+
+
   const [valueInput, setInputValue] = useState<InputValue>({
     initial: 0,
     coin: "",
   });
 
-  let currentTable: Irate[] = mercadopagorate;
+
+  const [rate, setRate] = useState<Irate[]>()
 
   const stringToCoin = (value: string) => {
     const formatCurrency = value.replace(/\D/g, "");
@@ -118,7 +27,7 @@ function App() {
     const initialValue = parseFloat(formatCurrency);
     setInputValue((prevState) => ({
       ...prevState,
-      initial: initialValue,
+      initial: initialValue / 100,
     }));
     return toCurrency;
   };
@@ -131,8 +40,15 @@ function App() {
     }));
   };
 
+  const handleConpany = (index: number) => {
+   
+    const curreteRateNow = currentRate[index].rate
+    setRate(curreteRateNow)
+  };
+
   return (
     <main className="font-[inter]">
+
       <nav className="flex items-center justify-between h-20 px-6">
         <h2 className="font-semibold text-[24px] text-slate-800">
           Simulador de Taxas
@@ -164,14 +80,18 @@ function App() {
 
       <nav className="my-6">
         <ul className="flex justify-center gap-2">
-          {currentRate.map(({ conpany, style }, index) => (
+          {currentRate.map(({ conpany, style }, index : number) => (
             <li
               key={index}
               className={clsx(
-                "cursor-pointer flex text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%]",
+                "cursor-pointer flex gap-[4px] flex-col text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%]",
                 style
               )}
+              onClick={() => handleConpany(index)}
             >
+              <span>
+              <CreditCard  size={16}/>
+              </span>
               {conpany}
             </li>
           ))}
@@ -194,7 +114,7 @@ function App() {
           </li>
         </ul>
 
-        {currentTable.map((item, index) => (
+        {rate?.map((item, index) => (
           <ul key={index} className="flex justify-between odd:bg-slate-100">
             <li className="flex px-2 w-[120px] text-[10px] font-normal text-zinc-800 py-[12px]">
               {item.parcela}
