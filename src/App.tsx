@@ -2,19 +2,18 @@ import clsx from "clsx";
 import { EllipsisVertical } from "lucide-react";
 import { useState } from "react";
 
-
 interface Irate {
-  parcela : string | number;
-  taxa : number
+  parcela: string | number;
+  taxa: number;
 }
 
 interface IConpany {
-  conpany : string,
-  rate : Irate[]
-  style :string
+  conpany: string;
+  rate: Irate[];
+  style: string;
 }
 
-const mercadopagorate : Irate[] = [
+const mercadopagorate: Irate[] = [
   { parcela: "Debito", taxa: 1.99 },
   { parcela: 1, taxa: 2.99 },
   { parcela: 2, taxa: 3.49 },
@@ -27,10 +26,9 @@ const mercadopagorate : Irate[] = [
   { parcela: 10, taxa: 10.29 },
   { parcela: 11, taxa: 11.29 },
   { parcela: 12, taxa: 12.29 },
- 
 ];
 
-const vermelhinhaRate :Irate[] = [
+const vermelhinhaRate: Irate[] = [
   { parcela: "Debito", taxa: 2.99 },
   { parcela: 1, taxa: 3.99 },
   { parcela: 2, taxa: 4.49 },
@@ -43,7 +41,6 @@ const vermelhinhaRate :Irate[] = [
   { parcela: 10, taxa: 11.29 },
   { parcela: 11, taxa: 12.29 },
   { parcela: 12, taxa: 13.29 },
- 
 ];
 
 const amarelinhaRate: Irate[] = [
@@ -59,10 +56,9 @@ const amarelinhaRate: Irate[] = [
   { parcela: 10, taxa: 12.19 },
   { parcela: 11, taxa: 13.59 },
   { parcela: 12, taxa: 14.39 },
- 
 ];
 
-const verdinhaRate : Irate[] = [
+const verdinhaRate: Irate[] = [
   { parcela: "Debito", taxa: 5.99 },
   { parcela: 1, taxa: 6.79 },
   { parcela: 2, taxa: 7.69 },
@@ -75,58 +71,66 @@ const verdinhaRate : Irate[] = [
   { parcela: 10, taxa: 14.29 },
   { parcela: 11, taxa: 15.69 },
   { parcela: 12, taxa: 16.29 },
- 
 ];
 
-
-
-const currentRate : IConpany[] = [
-  {conpany : "Mercado Pago", rate : mercadopagorate, style : 'hover:bg-blue-300 hover:text-blue-800'},
-  {conpany : "Verdinha", rate : verdinhaRate, style : 'hover:bg-green-300 hover:text-green-800'},
-  {conpany : "Amarelinha", rate : amarelinhaRate, style : 'hover:bg-yellow-300 hover:text-yellow-800'},
-  {conpany : "vermelhinha", rate : vermelhinhaRate, style : 'hover:bg-red-300 hover:text-red-800'},
-]
+const currentRate: IConpany[] = [
+  {
+    conpany: "Mercado Pago",
+    rate: mercadopagorate,
+    style: "hover:bg-blue-300 hover:text-blue-800",
+  },
+  {
+    conpany: "Verdinha",
+    rate: verdinhaRate,
+    style: "hover:bg-green-300 hover:text-green-800",
+  },
+  {
+    conpany: "Amarelinha",
+    rate: amarelinhaRate,
+    style: "hover:bg-yellow-300 hover:text-yellow-800",
+  },
+  {
+    conpany: "vermelhinha",
+    rate: vermelhinhaRate,
+    style: "hover:bg-red-300 hover:text-red-800",
+  },
+];
 
 interface InputValue {
-initial : number,
-coin : string
+  initial: number;
+  coin: string;
 }
-
-
 
 function App() {
-
   const [valueInput, setInputValue] = useState<InputValue>({
-    initial : 0,
-    coin : ''
-  })
+    initial: 0,
+    coin: "",
+  });
 
-  const [currentTable , setCurrentTable] = useState<Irate[]>(mercadopagorate)
+  let currentTable: Irate[] = mercadopagorate;
 
-function handleChangeRate(conpany : Irate[]){
-  setCurrentTable(conpany)
-}
+  const stringToCoin = (value: string) => {
+    const formatCurrency = value.replace(/\D/g, "");
+    const toCurrency = (parseFloat(formatCurrency) / 100).toLocaleString(
+      "pt-BR",
+      { style: "currency", currency: "BRL" }
+    );
+    const initialValue = parseFloat(formatCurrency);
+    setInputValue((prevState) => ({
+      ...prevState,
+      initial: initialValue,
+    }));
+    return toCurrency;
+  };
+  const handlerInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    const formatedValue = stringToCoin(value);
+    setInputValue((prevState) => ({
+      ...prevState,
+      coin: formatedValue,
+    }));
+  };
 
-  const stringToCoin = (value : string) =>{
-    const formatCurrency = value.replace(/\D/g, '')
-    const toCurrency = (parseFloat(formatCurrency) / 100).toLocaleString('pt-BR',{style : 'currency', currency : 'BRL'})
-    const initialValue = parseFloat(formatCurrency)
-    setInputValue((prevState)=>({
-      ...prevState, initial : initialValue
-    }))
-    return toCurrency
-  }
-  const handlerInput = (event : React.ChangeEvent<HTMLInputElement>) =>{
-    const {value} = event.target
-    const formatedValue = stringToCoin(value)
-    setInputValue((prevState) =>({
-      ...prevState, 
-      coin : formatedValue
-    }))  
-  }
-
-
- 
   return (
     <main className="font-[inter]">
       <nav className="flex items-center justify-between h-20 px-6">
@@ -158,22 +162,15 @@ function handleChangeRate(conpany : Irate[]){
         </fieldset>
       </section>
 
-      {/* <nav className="my-6">
-        <ul className="flex justify-center gap-2">
-          <li className="cursor-pointer flex text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%] hover:bg-blue-300 hover:text-blue-800">Mercado Pago</li>
-          <li className="cursor-pointer flex text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%] hover:bg-yellow-300 hover:text-yellow-800">Amarelinha</li>
-          <li className="cursor-pointer flex text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%] hover:bg-red-300 hover:text-red-800">Vermelhina</li>
-          <li className="cursor-pointer flex text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%] hover:bg-green-300 hover:text-green-800">Verdinha</li>
-        </ul>
-      </nav> */}
-
       <nav className="my-6">
         <ul className="flex justify-center gap-2">
-          {currentRate.map(({ conpany , style}, index) => (
+          {currentRate.map(({ conpany, style }, index) => (
             <li
               key={index}
-              className={clsx("cursor-pointer flex text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%]", style)}
-              onClick={handleChangeRate=>(conpany)}
+              className={clsx(
+                "cursor-pointer flex text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%]",
+                style
+              )}
             >
               {conpany}
             </li>
