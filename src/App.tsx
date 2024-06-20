@@ -78,13 +78,13 @@ useEffect(()=>{
         </fieldset>
       </section>
 
-      <nav className="my-6 w-full overflow-hidden">
-        <ul className="flex justify-start gap-2 w-[200%] overflow-x-auto px-4">
+      <nav className="my-6 w-full overflow-x-scroll">
+        <ul className="flex justify-start gap-2 w-[600px] overflow-x-">
           {currentRate.map(({ conpany, style }, index : number) => (
             <li
               key={index}
               className={clsx(
-                "cursor-pointer flex gap-[6px] flex-col text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[100px]",
+                "cursor-pointer flex gap-[6px] flex-col text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[200px]",
                 style
               )}
               onClick={() => handleConpany(index)}
