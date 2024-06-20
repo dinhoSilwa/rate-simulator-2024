@@ -64,33 +64,33 @@ export const currentRate: IConpany[] = [
   {
     conpany: "Mercado Pago",
     rate: mercadopagorate,
-    style: "hover:bg-blue-300 hover:text-blue-800",
+    style: "text-blue-800",
   },
   {
     conpany: "Pag Seguro",
     rate: pagSeguroRate,
-    style: "hover:bg-yellow-300 hover:text-yellow-800",
+    style: "text-yellow-600",
   },
   {
     conpany: "Stone",
     rate: stoneRate,
-    style: "hover:bg-green-300 hover:text-green-800",
+    style: "text-green-800",
   },
 
   {
     conpany: "Sumup",
     rate: pagSeguroRate,
-    style: "hover:bg-zinc-900 hover:text-zinc-100",
+    style: "text-zinc-800",
   },
 
   {
     conpany: "GetNet",
     rate: getNetRate,
-    style: "hover:bg-red-300 hover:text-red-800",
+    style: "text-red-800",
   },
   {
     conpany: "Infinity Pay",
     rate: pagSeguroRate,
-    style: "hover:bg-zinc-900 hover:text-zinc-100",
+    style: "text-zinc-950",
   },
 ];
