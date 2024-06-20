@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { CreditCard, EllipsisVertical, Loader2Icon, LoaderCircle } from "lucide-react";
+import { CreditCard, EllipsisVertical, LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { InputValue, Irate } from "./types/conpany";
 import { currentRate, mercadopagorate } from "./model/conpany-model";
