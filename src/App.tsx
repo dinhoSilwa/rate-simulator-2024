@@ -78,7 +78,7 @@ useEffect(()=>{
         </fieldset>
       </section>
 
-      <nav className="my-6 w-full overflow-x-scroll">
+      <nav className="my-6 w-full overflow-x-scroll custom-scrollbar">
         <ul className="flex justify-start gap-2 w-[600px] overflow-x-">
           {currentRate.map(({ conpany, style }, index : number) => (
             <li
