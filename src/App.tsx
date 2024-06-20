@@ -78,13 +78,13 @@ useEffect(()=>{
         </fieldset>
       </section>
 
-      <nav className="my-6">
-        <ul className="flex justify-center gap-2">
+      <nav className="my-6 w-full overflow-hidden">
+        <ul className="flex justify-start gap-2 w-[200%] overflow-x-auto px-4">
           {currentRate.map(({ conpany, style }, index : number) => (
             <li
               key={index}
               className={clsx(
-                "cursor-pointer flex gap-[4px] flex-col text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[20%]",
+                "cursor-pointer flex gap-[6px] flex-col text-[10px] border px-2 py-[14px] font-bold leading-none text-center items-center justify-center rounded-md w-[100px]",
                 style
               )}
               onClick={() => handleConpany(index)}
@@ -92,7 +92,7 @@ useEffect(()=>{
               <span>
               <CreditCard  size={16}/>
               </span>
-              {conpany}
+              <p className="flex flex-wrap px-2">{conpany}</p>
             </li>
           ))}
         </ul>

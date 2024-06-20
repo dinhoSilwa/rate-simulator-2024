@@ -15,7 +15,7 @@ export const mercadopagorate: Irate[] = [
   { parcela: 12, taxa: 12.29 },
 ];
 
-export const vermelhinhaRate: Irate[] = [
+export const getNetRate: Irate[] = [
   { parcela: "Debito", taxa: 2.99 },
   { parcela: 1, taxa: 3.99 },
   { parcela: 2, taxa: 4.49 },
@@ -30,7 +30,7 @@ export const vermelhinhaRate: Irate[] = [
   { parcela: 12, taxa: 13.29 },
 ];
 
-export const amarelinhaRate: Irate[] = [
+export const pagSeguroRate: Irate[] = [
   { parcela: "Debito", taxa: 3.99 },
   { parcela: 1, taxa: 4.59 },
   { parcela: 2, taxa: 5.29 },
@@ -45,7 +45,7 @@ export const amarelinhaRate: Irate[] = [
   { parcela: 12, taxa: 14.39 },
 ];
 
-export const verdinhaRate: Irate[] = [
+export const stoneRate: Irate[] = [
   { parcela: "Debito", taxa: 5.99 },
   { parcela: 1, taxa: 6.79 },
   { parcela: 2, taxa: 7.69 },
@@ -67,18 +67,30 @@ export const currentRate: IConpany[] = [
     style: "hover:bg-blue-300 hover:text-blue-800",
   },
   {
-    conpany: "Verdinha",
-    rate: verdinhaRate,
-    style: "hover:bg-green-300 hover:text-green-800",
-  },
-  {
-    conpany: "Amarelinha",
-    rate: amarelinhaRate,
+    conpany: "Pag Seguro",
+    rate: pagSeguroRate,
     style: "hover:bg-yellow-300 hover:text-yellow-800",
   },
   {
-    conpany: "vermelhinha",
-    rate: vermelhinhaRate,
+    conpany: "Stone",
+    rate: stoneRate,
+    style: "hover:bg-green-300 hover:text-green-800",
+  },
+
+  {
+    conpany: "Sumup",
+    rate: pagSeguroRate,
+    style: "hover:bg-zinc-900 hover:text-zinc-100",
+  },
+
+  {
+    conpany: "GetNet",
+    rate: getNetRate,
     style: "hover:bg-red-300 hover:text-red-800",
+  },
+  {
+    conpany: "Infinity Pay",
+    rate: pagSeguroRate,
+    style: "hover:bg-zinc-900 hover:text-zinc-100",
   },
 ];
