@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { CreditCard, EllipsisVertical } from "lucide-react";
+import { CreditCard, EllipsisVertical, Loader2Icon, LoaderCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { InputValue, Irate } from "./types/conpany";
 import { currentRate, mercadopagorate } from "./model/conpany-model";
@@ -8,6 +8,9 @@ function App() {
 
   const inputref = useRef(null)
   const [inFocus, setinFocus] = useState(false)
+  const [rate, setRate] = useState<Irate[]>();
+  const [isLoading, setIsLoading] = useState(false)
+
 
   const focusCheck = () =>{
     if(inputref.current === document.activeElement){
@@ -26,7 +29,6 @@ function App() {
     coin: "",
   });
 
-  const [rate, setRate] = useState<Irate[]>();
 
   const stringToCoin = (value: string) => {
     const formatCurrency = value.replace(/\D/g, "");
@@ -52,7 +54,13 @@ function App() {
 
   const handleConpany = (index: number) => {
     const curreteRateNow = currentRate[index].rate;
-    setRate(curreteRateNow);
+    setIsLoading(!isLoading)
+
+    setTimeout(() => {
+      setRate(curreteRateNow);
+      setIsLoading(false)
+
+    }, 1000);
   };
 
   return (
@@ -122,7 +130,7 @@ function App() {
         </ul>
       </nav>
 
-      <section className="flex flex-col gap-4 justify-start w-11/12 mr-auto ml-auto px-2 rounded-lg shadow-lg border pt-8 pb-8">
+      <section className="flex flex-col gap-4 justify-start w-11/12 mr-auto ml-auto px-2 rounded-lg shadow-lg border pt-8 pb-8 mb-20">
         <ul className="flex justify-between ">
           <li className="flex font-bold  text-center px-2 w-[120px] text-[14px] flex-1">
             Tempo
@@ -137,40 +145,46 @@ function App() {
             Parcela
           </li>
         </ul>
-
-        {rate?.map((item, index) => (
-          <ul key={index} className="flex justify-between odd:bg-slate-100">
-            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
-              {item.parcela}
-              {item.parcela !== "Debito" ? "X" : null}
-            </li>
-            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
-              {item.taxa.toLocaleString("pt-BR", {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-              %
-            </li>
-            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
-              {(valueInput.initial * (1 - item.taxa / 100)).toLocaleString(
-                "pt-BR",
-                { style: "currency", currency: "BRL" }
-              )}
-            </li>
-            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
-              {typeof item.parcela === "number"
-                ? (
-                    valueInput.initial *
-                    (1 - item.taxa / 100) *
-                    item.parcela
-                  ).toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })
-                : null}
-            </li>
-          </ul>
-        ))}
+{
+  !isLoading ? <section>
+  
+  {rate?.map((item, index) => (
+            <ul key={index} className="flex justify-between odd:bg-slate-100">
+              <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
+                {item.parcela}
+                {item.parcela !== "Debito" ? "X" : null}
+              </li>
+              <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
+                {item.taxa.toLocaleString("pt-BR", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+                %
+              </li>
+              <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
+                {(valueInput.initial * (1 - item.taxa / 100)).toLocaleString(
+                  "pt-BR",
+                  { style: "currency", currency: "BRL" }
+                )}
+              </li>
+              <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
+                {typeof item.parcela === "number"
+                  ? (
+                      valueInput.initial *
+                      (1 - item.taxa / 100) *
+                      item.parcela
+                    ).toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })
+                  : null}
+              </li>
+            </ul>
+          ))}
+  </section> : <div className="bg-blue-100 h-[350px] grid place-content-center">
+<div className="flex flex-col items-center gap-2"> <LoaderCircle size={36} className="animate-spin" /> <p className="animate-pulse">Carregando Tabelas...</p></div>
+  </div>
+}
       </section>
     </main>
   );
