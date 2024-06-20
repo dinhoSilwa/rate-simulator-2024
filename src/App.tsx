@@ -125,7 +125,7 @@ function App() {
       <section className="flex flex-col gap-4 justify-start w-11/12 mr-auto ml-auto px-2 rounded-lg shadow-lg border pt-8 pb-8">
         <ul className="flex justify-between ">
           <li className="flex font-bold  text-center px-2 w-[120px] text-[14px] flex-1">
-            Vezes
+            Tempo
           </li>
           <li className="flex font-bold  text-center px-2 w-[120px] text-[14px] flex-1">
             Taxa
@@ -140,24 +140,24 @@ function App() {
 
         {rate?.map((item, index) => (
           <ul key={index} className="flex justify-between odd:bg-slate-100">
-            <li className="flex px-2 w-[120px] text-[10px] font-normal text-zinc-800 py-[12px]">
+            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
               {item.parcela}
               {item.parcela !== "Debito" ? "X" : null}
             </li>
-            <li className="flex px-2 w-[120px] text-[10px] font-normal text-zinc-800 py-[12px]">
+            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
               {item.taxa.toLocaleString("pt-BR", {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
               })}
               %
             </li>
-            <li className="flex px-2 w-[120px] text-[10px] font-normal text-zinc-800 py-[12px]">
+            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
               {(valueInput.initial * (1 - item.taxa / 100)).toLocaleString(
                 "pt-BR",
                 { style: "currency", currency: "BRL" }
               )}
             </li>
-            <li className="flex px-2 w-[120px] text-[10px] font-normal text-zinc-800 py-[12px]">
+            <li className="flex px-2 w-[120px] text-[12px] font-normal text-zinc-800 py-[12px]">
               {typeof item.parcela === "number"
                 ? (
                     valueInput.initial *

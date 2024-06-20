@@ -64,33 +64,33 @@ export const currentRate: IConpany[] = [
   {
     conpany: "Mercado Pago",
     rate: mercadopagorate,
-    style: "text-blue-800",
+    style: "text-blue-800 hover:bg-blue-600 hover:text-blue-100 active:bg-blue-600 active:text-blue-100",
   },
   {
     conpany: "Pag Seguro",
     rate: pagSeguroRate,
-    style: "text-yellow-600",
+    style: "text-yellow-600 hover:bg-blue-600 hover:text-blue-100 active:bg-blue-600 active:text-blue-100",
   },
   {
     conpany: "Stone",
     rate: stoneRate,
-    style: "text-green-800",
+    style: "text-green-800 hover:bg-blue-600 hover:text-blue-100 active:bg-blue-600 active:text-blue-100",
   },
 
   {
     conpany: "Sumup",
     rate: pagSeguroRate,
-    style: "text-zinc-800",
+    style: "text-zinc-800 hover:bg-blue-600 hover:text-blue-100 active:bg-blue-600 active:text-blue-100",
   },
 
   {
     conpany: "GetNet",
     rate: getNetRate,
-    style: "text-red-800",
+    style: "text-red-800 hover:bg-blue-600 hover:text-blue-100 active:bg-blue-600 active:text-blue-100",
   },
   {
     conpany: "Infinity Pay",
     rate: pagSeguroRate,
-    style: "text-zinc-950",
+    style: "text-zinc-950 hover:bg-blue-600 hover:text-blue-100 active:bg-blue-600 active:text-blue-100",
   },
 ];
