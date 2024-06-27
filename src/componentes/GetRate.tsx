@@ -158,8 +158,8 @@ export const GetRate = () => {
           
             type="number"
             id="valorpassado"
+            placeholder="Digite o valor da venda"
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
-            value={Number(inputvalue.originalvalue) || 0}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setinputvalue((prevState) => ({
                 ...prevState,
@@ -177,9 +177,10 @@ export const GetRate = () => {
             Digite o valor total (com a taxa)
           </label>
           <input
+          placeholder="Digite o valor Total com a Taxa"
             type="number"
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
-            value={Number(inputvalue.valuewhithrate) || 0}
+           
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setinputvalue((prevState) => ({
                 ...prevState,
