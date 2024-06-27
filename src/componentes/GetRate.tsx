@@ -213,7 +213,7 @@ export const GetRate = () => {
                 key={index}
                 htmlFor={parcela.toString()}
                 className={clsx("px-1 py-2 bg-blue-50 hover:bg-blue-400 hover:text-blue-900 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md cursor-pointer",{"bg-blue-300 text-blue-800 font-bold" : isCliked === parcela})}
-                onClick={()=>setisCliked(parcela)}
+                onClick={()=>setisCliked(parcela as string)}
               >
                 {parcela === "Debito" ? "Debito" : `${parcela} X`}
               </label>
