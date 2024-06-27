@@ -156,7 +156,7 @@ export const GetRate = () => {
           </label>
           <input
           
-            type="text"
+            type="number"
             id="valorpassado"
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
             value={Number(inputvalue.originalvalue) || 0}
@@ -177,7 +177,7 @@ export const GetRate = () => {
             Digite o valor total (com a taxa)
           </label>
           <input
-            type="text"
+            type="number"
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
             value={Number(inputvalue.valuewhithrate) || 0}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
