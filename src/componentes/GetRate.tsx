@@ -44,9 +44,13 @@ export const GetRate = () => {
        notify("O valor do primeiro campo não pode ser menor do que o do segundo")
        return
 
-    }else if(inputvalue.originalvalue >= 0 && inputvalue.valuewhithrate >= 0){
+    }else if(!inputvalue.originalvalue && !inputvalue.valuewhithrate){
       notify("Não pode existir campos vazios")
       return
+    }else if(inputvalue.portion <= 0){
+      return notify("Escolha um Tipo de Parcelamento")
+    }else{
+      setisRate(!isRate);
 
     }
 
@@ -59,8 +63,10 @@ export const GetRate = () => {
       rate,
     }));
 
-    setisRate(!isRate);
+   
   };
+
+  const [isCliked, setisCliked] = useState('')
 
   return (
     <>
@@ -184,17 +190,11 @@ export const GetRate = () => {
         </fieldset>
 
         <span>Quantidade de Parcelas:</span>
+      
         <fieldset className="flex gap-2 flex-wrap items-center mb-6">
           {mercadopagorate.map(({ parcela }, index) => (
             <>
-              <label
-                key={index}
-                htmlFor={parcela.toString()}
-                className="px-1 py-2 bg-blue-50 hover:bg-blue-400 hover:text-blue-900 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md"
-              >
-                {parcela === "Debito" ? "Debito" : `${parcela} X`}
-              </label>
-              <input
+                    <input
                 type="radio"
                 id={parcela.toString()}
                 name={"radioinput"}
@@ -209,14 +209,24 @@ export const GetRate = () => {
                   }))
                 }
               />
+              <label
+                key={index}
+                htmlFor={parcela.toString()}
+                className={clsx("px-1 py-2 bg-blue-50 hover:bg-blue-400 hover:text-blue-900 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md cursor-pointer",{"bg-blue-300 text-blue-800 font-bold" : isCliked === parcela})}
+                onClick={()=>setisCliked(parcela)}
+              >
+                {parcela === "Debito" ? "Debito" : `${parcela} X`}
+              </label>
+      
             </>
           ))}
         </fieldset>
         <fieldset className="flex items-center justify-center">
           <button
             type="submit"
-            className="bg-green-600 text-white py-2 w-[80%] rounded-md h-16"
-          >
+            className={clsx("bg-green-600 text-white py-2 w-[80%] rounded-md h-16 transition-all", {"bg-zinc-200" : !inputvalue.originalvalue || !inputvalue.valuewhithrate || !inputvalue.portion})}
+            disabled={!(inputvalue.originalvalue && inputvalue.valuewhithrate && inputvalue.portion)}
+            >
             Encontrar Taxa
           </button>
         </fieldset>
