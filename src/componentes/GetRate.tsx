@@ -158,7 +158,7 @@ export const GetRate = () => {
           
             type="number"
             id="valorpassado"
-            placeholder="Digite o valor da venda"
+            placeholder="R$ 00,00"
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setinputvalue((prevState) => ({
@@ -177,9 +177,10 @@ export const GetRate = () => {
             Digite o valor total (com a taxa)
           </label>
           <input
-          placeholder="Digite o valor Total com a Taxa"
+            placeholder="R$ 00,00"
             type="number"
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
+            
            
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setinputvalue((prevState) => ({
@@ -190,7 +191,9 @@ export const GetRate = () => {
           />
         </fieldset>
 
-        <span>Quantidade de Parcelas:</span>
+        <span className="font-bold text-zinc-500 text-[14px]"
+        >Quantidade de Parcelas:</span>
+
       
         <fieldset className="flex gap-2 flex-wrap items-center mb-6">
           {mercadopagorate.map(({ parcela }, index) => (
@@ -202,18 +205,15 @@ export const GetRate = () => {
                 className="hidden"
                 onChange={() =>
                   setinputvalue((prevState) => ({
-                    ...prevState,
-                    portion:
-                      typeof parcela === "string"
-                        ? inputvalue.valuewhithrate
-                        : parcela,
+                    ...prevState, portion :Number(parcela)
+                    
                   }))
                 }
               />
               <label
                 key={index}
                 htmlFor={parcela.toString()}
-                className={clsx("px-1 py-2 bg-blue-50 hover:bg-blue-400 hover:text-blue-900 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md cursor-pointer",{"bg-blue-300 text-blue-800 font-bold" : isCliked === parcela})}
+                className={clsx("px-1 py-2 bg-blue-50 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md cursor-pointer transition-all",{"bg-blue-600 text-blue-300 font-bold" : isCliked === parcela})}
                 onClick={()=>setisCliked(parcela as string)}
               >
                 {parcela === "Debito" ? "Debito" : `${parcela} X`}
@@ -228,7 +228,7 @@ export const GetRate = () => {
             className={clsx("bg-green-600 text-white py-2 w-[80%] rounded-md h-16 transition-all", {"bg-zinc-200" : !inputvalue.originalvalue || !inputvalue.valuewhithrate || !inputvalue.portion})}
             disabled={!(inputvalue.originalvalue && inputvalue.valuewhithrate && inputvalue.portion)}
             >
-            Encontrar Taxa
+            Encontrar Taxa 
           </button>
         </fieldset>
       </form>
