@@ -8,12 +8,15 @@ import { mercadopagorate } from "../model/getrate.model";
 export const GetRate = () => {
   const notify = (msg: string) => toast(msg);
 
+  const [isCliked, setisCliked] = useState("");
   const [isRate, setisRate] = useState(false);
   const [inputvalue, setinputvalue] = useState<Ioperation>({
     originalvalue: "",
     valuewhithrate: "",
     rate: 0,
     portion: 0,
+    divide : '',
+    mpRate : 0
   });
 
   const convertValue = (value: string) => {
@@ -40,8 +43,10 @@ export const GetRate = () => {
     const convertOrigin = convertValue(inputvalue.originalvalue);
     const convertWithRate = convertValue(inputvalue.valuewhithrate);
     const findRate = ((convertWithRate - convertOrigin) / convertOrigin) * 100;
+    const findDiv = (convertWithRate / 100) / inputvalue.portion
 
-  
+
+
       if (convertOrigin >= convertWithRate) {
         notify(
           "🚨 | Digite um valor no primeiro Campo menor do que no Segundo"
@@ -49,19 +54,31 @@ export const GetRate = () => {
         return;
       }
       updateRate(findRate);
+      setinputvalue(prevState=>({
+        ...prevState, divide : findDiv.toLocaleString('pt-BR', {style : "currency", currency : "BRL"})
+      }))
 
   };
 
-  const [isCliked, setisCliked] = useState("");
+  const finishOperation = () =>{
+    setisRate(!isRate)
+    setinputvalue(prevState=>({
+      ...prevState, originalvalue : '', valuewhithrate : '', rate : 0, divide : '', portion : 0
+    }))
+  }
+
+  const compareRate = (mprate : number) =>{
+    alert(`Vai comparar Porra ${mprate}`)
+  }
+
 
   return (
     <>
-      <Toaster />''
-      <section></section>
+      <Toaster />
       <header className="flex flex-col bg-blue-600 py-8">
 
         <nav className="flex items-center justify-between px-6 h-20">
-          <h2 className="font-semibold text-[18px] text-blue-100">
+          <h2 className="font-semibold text-[18px] text-blue-50">
             Encontrar Taxa Aplicada
           </h2>{" "}
           <span className="active:bg-blue-800 p-4 rounded-full cursor-pointer">
@@ -75,9 +92,10 @@ export const GetRate = () => {
             { hidden: !isRate }
           )}
         >
-       <section className="font-[inter] text-[10px] text-right pr-8">
-        fechar
-       </section>
+       <nav className="font-[inter] text-[10px] text-right pr-8 cursor-pointer flex gap-2 justify-end" >
+        <div onClick={finishOperation}>Fechar</div>
+        <div onClick={() =>compareRate(inputvalue.mpRate as number)}>Comparar</div>
+       </nav>
           <header className="flex justify-between pr-6 flex-col">
             <h3 className="w-full text-[8px] text-slate-500 font-semibold font-[inter] ">
               valor total com a taxa
@@ -115,7 +133,7 @@ export const GetRate = () => {
               </div>
 
               <div className="text-[14px] font-bold text-slate-800">
-                {}
+                {inputvalue.divide}
               </div>
             </div>
           </section>
@@ -138,7 +156,7 @@ export const GetRate = () => {
             id="valorpassado"
             placeholder="R$ 00,00"
             value={inputvalue.originalvalue}
-            className="bg-zinc-200 pl-4 py-4 rounded-lg"
+            className="bg-zinc-200 pl-4 py-4 rounded-lg text-zinc-800 font-semibold"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const currentValue = e.target.value.replace(/\D/g, "");
               const toCoin = (Number(currentValue) / 100).toLocaleString(
@@ -167,7 +185,7 @@ export const GetRate = () => {
             placeholder="R$ 00,00"
             type="text"
             value={inputvalue.valuewhithrate}
-            className="bg-zinc-200 pl-4 py-4 rounded-lg"
+            className="bg-zinc-200 pl-4 py-4 rounded-lg text-zinc-800 font-semibold"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const currentValue = e.target.value.replace(/\D/g, "");
               const toCoin = (Number(currentValue) / 100).toLocaleString(
@@ -189,7 +207,7 @@ export const GetRate = () => {
         <span>Quantidade de Parcelas: {inputvalue.portion}</span>
 
         <fieldset className="flex gap-2 flex-wrap items-center mb-6">
-          {mercadopagorate.map(({ parcela }, index) => (
+          {mercadopagorate.map(({ parcela, taxa }, index) => (
             <>
               <input
                 type="radio"
@@ -209,13 +227,18 @@ export const GetRate = () => {
                 className={clsx(
                   "px-1 py-2 bg-blue-50 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md cursor-pointer",
                   {
-                    "bg-blue-600 text-blue-200 font-bold": isCliked === parcela,
+                    "bg-blue-300 text-blue-900 font-bold": isCliked === parcela,
                   }
                 )}
-                onClick={() => setisCliked(parcela as string)}
+                onClick={() => {
+                  setisCliked(parcela as string), setinputvalue(prevState=>({
+                    ...prevState, mpRate : taxa
+                  }))
+                }}
               >
                 {parcela === "Debito" ? "Debito" : `${parcela} X`}
               </label>
+              
             </>
           ))}
         </fieldset>

@@ -4,4 +4,6 @@ export interface Ioperation {
   valuewhithrate: string;
   rate: number;
   portion: number;
+  divide? : string
+  mpRate ? : number 
 }
