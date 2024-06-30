@@ -1,81 +1,65 @@
 import React, { FormEvent, useState } from "react";
-import { Irate } from "../types/conpany";
 import { EllipsisVertical } from "lucide-react";
 import clsx from "clsx";
-import toast, { Toaster } from 'react-hot-toast';
-
-const mercadopagorate: Irate[] = [
-  { parcela: 1, taxa: 2.99 },
-  { parcela: 2, taxa: 3.49 },
-  { parcela: 3, taxa: 4.79 },
-  { parcela: 5, taxa: 5.29 },
-  { parcela: 6, taxa: 6.29 },
-  { parcela: 7, taxa: 7.29 },
-  { parcela: 8, taxa: 8.29 },
-  { parcela: 9, taxa: 9.29 },
-  { parcela: 10, taxa: 10.29 },
-  { parcela: 11, taxa: 11.29 },
-  { parcela: 12, taxa: 12.29 },
-];
-
-interface Ioperation {
-  originalvalue: number;
-  valuewhithrate: number;
-  rate: number;
-  portion: number;
-}
+import toast, { Toaster } from "react-hot-toast";
+import { Ioperation } from "../types/getrate";
+import { mercadopagorate } from "../model/getrate.model";
 
 export const GetRate = () => {
-
-  const notify = (msg : string) => toast.error(msg)
+  const notify = (msg: string) => toast(msg);
 
   const [isRate, setisRate] = useState(false);
   const [inputvalue, setinputvalue] = useState<Ioperation>({
-    originalvalue: 0,
-    valuewhithrate: 0,
+    originalvalue: "",
+    valuewhithrate: "",
     rate: 0,
     portion: 0,
   });
 
+  const convertValue = (value: string) => {
+    const currentValue = value.replace(/\D/g, "");
+    const numberValue = Number(currentValue);
+    return numberValue;
+  };
+
+  const updateRate = (findedRate: number) => {
+    const curretRate = Number(findedRate.toFixed(2));
+
+    setinputvalue((prevState) => ({
+      ...prevState,
+      rate: curretRate,
+    }));
+
+    notify("✅ | Taxa encontrada");
+    setisRate(true);
+  };
+
   const findRate = (event: FormEvent) => {
     event.preventDefault();
 
-    if (inputvalue.originalvalue > inputvalue.valuewhithrate) {
-       notify("O valor do primeiro campo não pode ser menor do que o do segundo")
-       return
+    const convertOrigin = convertValue(inputvalue.originalvalue);
+    const convertWithRate = convertValue(inputvalue.valuewhithrate);
+    const findRate = ((convertWithRate - convertOrigin) / convertOrigin) * 100;
 
-    }else if(!inputvalue.originalvalue && !inputvalue.valuewhithrate){
-      notify("Não pode existir campos vazios")
-      return
-    }else if(inputvalue.portion <= 0){
-      return notify("Escolha um Tipo de Parcelamento")
-    }else{
-      setisRate(!isRate);
+  
+      if (convertOrigin >= convertWithRate) {
+        notify(
+          "🚨 | Digite um valor no primeiro Campo menor do que no Segundo"
+        );
+        return;
+      }
+      updateRate(findRate);
 
-    }
-
-    const rate =
-      ((inputvalue.valuewhithrate - inputvalue.originalvalue) /
-        inputvalue.originalvalue) *
-      100;
-    setinputvalue((prevState) => ({
-      ...prevState,
-      rate,
-    }));
-
-   
   };
 
-  const [isCliked, setisCliked] = useState('')
+  const [isCliked, setisCliked] = useState("");
 
   return (
     <>
-
-    <Toaster />
-      <section>
-        {/* {inputvalue.originalvalue} - {inputvalue.valuewhithrate} - {inputvalue.rate} - {inputvalue.portion} */}
-      </section>
+      <Toaster />''
+      <section></section>
       <header className="flex flex-col bg-blue-600 py-8">
+
         <nav className="flex items-center justify-between px-6 h-20">
           <h2 className="font-semibold text-[18px] text-blue-100">
             Encontrar Taxa Aplicada
@@ -91,6 +75,9 @@ export const GetRate = () => {
             { hidden: !isRate }
           )}
         >
+       <section className="font-[inter] text-[10px] text-right pr-8">
+        fechar
+       </section>
           <header className="flex justify-between pr-6 flex-col">
             <h3 className="w-full text-[8px] text-slate-500 font-semibold font-[inter] ">
               valor total com a taxa
@@ -101,12 +88,12 @@ export const GetRate = () => {
                   R$
                 </span>
                 <span className="text-[32px] font-[inter] text-slate-800 font-bold">
-                  {Number(inputvalue.valuewhithrate) || 0}
+                  {inputvalue.valuewhithrate}
                 </span>
               </div>
 
-              <div className="flex border border-green-400 w-[70px] h-8 rounded-2xl items-center justify-center text-green-600 shadow-green-300">
-                {Number(inputvalue.rate || 0)} %
+              <div className="flex border-[3px] border-green-400 w-[70px] h-8 rounded-2xl items-center justify-center text-green-600 shadow-green-300 font-bold">
+                {`${inputvalue.rate}%`}
               </div>
             </section>
           </header>
@@ -118,10 +105,7 @@ export const GetRate = () => {
               </div>
 
               <div className="text-[14px] font-bold text-slate-800">
-                {(Number(inputvalue.originalvalue) || 0).toLocaleString(
-                  "pt-BR",
-                  { style: "currency", currency: "BRL" }
-                )}
+               {inputvalue.originalvalue}
               </div>
             </div>
 
@@ -131,12 +115,7 @@ export const GetRate = () => {
               </div>
 
               <div className="text-[14px] font-bold text-slate-800">
-                {(
-                  Number(inputvalue.valuewhithrate / inputvalue.portion) || 0
-                ).toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
+                {}
               </div>
             </div>
           </section>
@@ -155,18 +134,26 @@ export const GetRate = () => {
             Digite o valor da venda
           </label>
           <input
-          
-            type="number"
+            type="text"
             id="valorpassado"
             placeholder="R$ 00,00"
+            value={inputvalue.originalvalue}
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const currentValue = e.target.value.replace(/\D/g, "");
+              const toCoin = (Number(currentValue) / 100).toLocaleString(
+                "pt-BR",
+                {
+                  style: "currency",
+                  currency: "BRL",
+                }
+              );
+
               setinputvalue((prevState) => ({
                 ...prevState,
-                originalvalue: parseFloat(e.target.value),
+                originalvalue: toCoin,
               }));
             }}
-            
           />
         </fieldset>
         <fieldset className="flex flex-col gap-2">
@@ -178,61 +165,84 @@ export const GetRate = () => {
           </label>
           <input
             placeholder="R$ 00,00"
-            type="number"
+            type="text"
+            value={inputvalue.valuewhithrate}
             className="bg-zinc-200 pl-4 py-4 rounded-lg"
-            
-           
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const currentValue = e.target.value.replace(/\D/g, "");
+              const toCoin = (Number(currentValue) / 100).toLocaleString(
+                "pt-BR",
+                {
+                  style: "currency",
+                  currency: "BRL",
+                }
+              );
+
               setinputvalue((prevState) => ({
                 ...prevState,
-                valuewhithrate: parseFloat(e.target.value),
-              }))
-            }
+                valuewhithrate: toCoin,
+              }));
+            }}
           />
         </fieldset>
 
-        <span className="font-bold text-zinc-500 text-[14px]"
-        >Quantidade de Parcelas:</span>
+        <span>Quantidade de Parcelas: {inputvalue.portion}</span>
 
-      
         <fieldset className="flex gap-2 flex-wrap items-center mb-6">
           {mercadopagorate.map(({ parcela }, index) => (
             <>
-                    <input
+              <input
                 type="radio"
                 id={parcela.toString()}
                 name={"radioinput"}
                 className="hidden"
-                onChange={() =>
+                onChange={() => {
                   setinputvalue((prevState) => ({
-                    ...prevState, portion :Number(parcela)
-                    
-                  }))
-                }
+                    ...prevState,
+                    portion: Number(parcela),
+                  }));
+                }}
               />
               <label
                 key={index}
                 htmlFor={parcela.toString()}
-                className={clsx("px-1 py-2 bg-blue-50 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md cursor-pointer transition-all",{"bg-blue-600 text-blue-300 font-bold" : isCliked === parcela})}
-                onClick={()=>setisCliked(parcela as string)}
+                className={clsx(
+                  "px-1 py-2 bg-blue-50 w-[80px] flex text-center justify-center text-[12px] font-bold text-zinc-800 rounded-md cursor-pointer",
+                  {
+                    "bg-blue-600 text-blue-200 font-bold": isCliked === parcela,
+                  }
+                )}
+                onClick={() => setisCliked(parcela as string)}
               >
                 {parcela === "Debito" ? "Debito" : `${parcela} X`}
               </label>
-      
             </>
           ))}
         </fieldset>
         <fieldset className="flex items-center justify-center">
           <button
             type="submit"
-            className={clsx("bg-green-600 text-white py-2 w-[80%] rounded-md h-16 transition-all", {"bg-zinc-200" : !inputvalue.originalvalue || !inputvalue.valuewhithrate || !inputvalue.portion})}
-            disabled={!(inputvalue.originalvalue && inputvalue.valuewhithrate && inputvalue.portion)}
-            >
-            Encontrar Taxa 
+            className={clsx(
+              "bg-green-600 text-white py-2 w-[80%] rounded-md h-16 transition-all",
+              {
+                "bg-zinc-200":
+                  !inputvalue.originalvalue ||
+                  !inputvalue.valuewhithrate ||
+                  !inputvalue.portion,
+              }
+            )}
+            disabled={
+              !(
+                inputvalue.originalvalue &&
+                inputvalue.valuewhithrate &&
+                inputvalue.portion
+              )
+            }
+          >
+            Encontrar Taxa
           </button>
         </fieldset>
       </form>
-
     </>
   );
 };
